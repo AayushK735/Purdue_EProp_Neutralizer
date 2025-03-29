@@ -1,5 +1,6 @@
 import math
 import matplotlib.pyplot as plt
+import pandas as pd
 class Filament:
     def __init__(self, name, workFunction, workingTemp, dCoeff, diameter, cost, costLength, emissivity,
                  specHeatCapacity, density, resistivity):
@@ -189,44 +190,13 @@ emissionCurrent = J * SA
 
 print(f"E Current: {emissionCurrent} ")
 
-print(f"Thermal Cond: {tempConnector()}")
-
-
+### Testing 
 
 fil = thorTungsten
 testing_list = list(range(1,15))
 
 resistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature 
-print("---------")
-# Method One
-last_temp = 500 
-first_res = True
-for a in testing_list:
-     length = 150/10
-     amps = float(a)
-     print(f"Current: {amps}")
-     calc_resistivity = resistivty_coeffs[0] * last_temp + resistivty_coeffs[1]
-     if first_res:
-          calc_resistivity = 10.56
-          first_res = False
-     uOmega = (calc_resistivity * length) / (math.pi * ((chosenFilament.diameter / 2)**2))
-     omega = uOmega/1000000 #Micro to base
-     print(f"Resistivity: {calc_resistivity}")
-     power = amps**2 * omega
-     print(f"Power: {power}")
-     sigma = 5.67 * 10 ** -8
-     area = (length * math.pi * chosenFilament.diameter)
-     area_m = area/(10**4)
-
-     T = ((power)/(area_m*sigma*fil.emissivity))**0.25
-     last_temp = T
-     print(f"Fil Temp: {T}")
-
-     J = chosenFilament.dCoeff * (T ** 2) * (
-                 math.exp (((-e_charge * chosenFilament.workFunction) / (k * T))))
-     estEmissionCurrent = J * area
-     print(f"Est Eimission Current: {estEmissionCurrent}")
-     print("---------")
+print("Testing Results: \n --------- \n")
 
 # Method Two
 x_vals = []
@@ -236,19 +206,17 @@ for a in testing_list:
      amps = float(a)
      print(f"Current: {amps}")
 
-     T_guess = 273
+     T_guess = 273 # Initial guess of Temperature
      sigma = 5.67 * 10 ** -8
      
-     for _ in range(10000):
+     for _ in range(10000): # Iterating to solve for T since resistivtity relies on temp which relies on power which relies on resistivty
           calc_resistivity = resistivty_coeffs[0] * T_guess + resistivty_coeffs[1]
           uOmega = (calc_resistivity * length) / (math.pi * ((chosenFilament.diameter / 2)**2))
           omega = uOmega/1000000 #Micro to base
-          #print(f"Resistivity: {calc_resistivity}")
           power = amps**2 * omega
-          #print(f"Power: {power}")
           area = (length * math.pi * chosenFilament.diameter)
           area_m = area/(10**4)
-          T_new = (((power)/(area_m*sigma*fil.emissivity)))**0.25 # Maybe add T_Inf
+          T_new = (((power)/(area_m*sigma*fil.emissivity)))**0.25 # T_inf can be added but is negligible 
 
           T_guess = T_new
      print(f"Power: {power}")
@@ -256,32 +224,28 @@ for a in testing_list:
      print("---------")
      x_vals.append(a)
      y_vals.append(power)
-
-     J = chosenFilament.dCoeff * (T ** 2) * (
-                 math.exp (((-e_charge * chosenFilament.workFunction) / (k * T))))
+     if type(T_guess) == float: # Making sure temperature is a real number
+        J = chosenFilament.dCoeff * (T_guess ** 2) * (
+                    math.exp (((-e_charge * chosenFilament.workFunction) / (k * T_guess))))
+     else:
+        J = 0
      estEmissionCurrent = J * area
      print(f"Est Eimission Current: {estEmissionCurrent}")
 
-# To Do:
+# Get experimental values from spreadsheet
+data = pd.read_csv('test1.csv')
+exper_x = data['A'].tolist()
+exper_y = data['D'].tolist()
+
 
 plt.plot(x_vals, y_vals)
+plt.plot(exper_x, exper_y)
+plt.title("Watts vs Amps")
+plt.xlabel("Amps [A]")
+plt.ylabel("Watts [W]")
+plt.legend(["Theoretical Values", "Experimental Values"])
 plt.show()
 
-
-#Consider gauge of wires
-
-
-
-# How much current PPU
-
-
-# Input
-# Material
-# Required Emission current
-
-# output
-# Wire Length
-# Filament V and I, taking into account resistivty. Can only control one of two parameters. Estimate the voltage. P is a function of temp
 
 
 # References:
