@@ -1,0 +1,307 @@
+[
+    {
+        "label": "math",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "math",
+        "description": "math",
+        "detail": "math",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "Filament",
+        "kind": 6,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "class Filament:\n    def __init__(self, name, workFunction, workingTemp, dCoeff, diameter, cost, costLength, emissivity,\n                 specHeatCapacity, density, resistivity):\n        self.name = name\n        self.workFunction = workFunction\n        self.workingTemp = workingTemp  # K\n        self.dCoeff = dCoeff\n        self.diameter = diameter  # cm\n        self.cost = cost  # $\n        self.costLength = costLength  # m",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "temp",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way\n    # Inverse square Law\n    areaThruster = 64/10000 #64 cm^2 est\n    standOffLength = 0.042164 # m\n    Q = Q * areaThruster/(4 * math.pi * standOffLength**2)\n    t = 60 # time",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "temp2",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def temp2(fil: Filament, filLength: float, area: float):\n    #https://assets.omega.com/pdf/tables_and_graphs/emissivity-table.pdf\n    #At steady state, emmisvity is equal to absoroptivity due to kirchhoff's law of thermal radiation\n    PtotalWire = powerNeeded(fil, filLength, area)\n    steelAbsorptivity = 0.11\n    Prad = PtotalWire * (.265/(2*math.pi)) * steelAbsorptivity\n    shuntArea = (11.25*190)/1000000\n    sigma = 5.67 * 10 ** -8\n    steelEmissivity = 0.11#.21\n    T = ((Prad)/(shuntArea*sigma*steelEmissivity))**0.25",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "temp3",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def temp3(fil: Filament, filLength: float, area: float):\n        # https://assets.omega.com/pdf/tables_and_graphs/emissivity-table.pdf\n        # At steady state, emmisvity is equal to absoroptivity due to kirchhoff's law of thermal radiation\n        PtotalWire = powerNeeded(fil, filLength, area)\n        steelAbsorptivity = 0.11\n        Prad = PtotalWire * (.208 / (2 * math.pi)) * steelAbsorptivity\n        shuntArea = (((8.75 * 216))+1500) / 1000000\n        sigma = 5.67 * 10 ** -8\n        steelEmissivity = 0.11  # .21\n        T = ((Prad) / (shuntArea * sigma * steelEmissivity)) ** 0.25",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "tempConnector",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def tempConnector():\n    thermalCond = 300 #lower end is 150 #Could be higher or lower\n    estContactArea = (((2 * math.pi * (0.5/2))/1000) * .00508) * .5 #.2 Inch of length, lets assume all around but thats over shooting.\n    thicknessOfConnector = .09/39.37\n #   Pcond = thermalCond * estContactArea * ((1900-293)/thicknessOfConnector)\n   # Pcond = 100\n    sigma = 5.67 * 10 ** -8\n    becuEmissivity = 0.72#TEMP\n    connectorArea = 0.00013161264\n  #  T = ((Pcond) / (connectorArea * sigma * becuEmissivity)) ** 0.25",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "powerNeeded",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def powerNeeded(fil: Filament, length, area: float):\n    # Q = mc T\n    #mass = fil.density * length * ((fil.diameter / 2) ** 2) * math.pi\n    #c = fil.specHeatCapacity\n    #T = fil.workingTemp - 293.15\n    #initQ = mass * c * T\n    #Nick said this isn't really necessary, focus on radiative heat\n    # Using radiative heat\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "tungsten",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "tungsten = Filament(\"Tungsten\", 4.55, 2500, 70, .048, 56.85, 3.048, .45, .134, 19.25, 74.70)  # [1] [2] [8] [9]\n# tantalum = Filament(\"tantalum\", 4.1, 2400, 37, .076, 25.83, .0254, .27, 0, 0) #Estimated E\nthorTungsten = Filament(\"Thoriated Tungsten\", 2.63, 1900, 3, .05, 105.58, .3, .4, .134, 18.8, 54.93)  # [2] [3] [7] [8] [9] For many properties, I'm assuming they're simialr to pure tungsten\n# moly = Filament(\"Molybdenum\", 4.2, 1900, 50, .041, 25.65, 3.048, None, None, None)\nfilamentList = [tungsten, thorTungsten]\nk = 1.380649 * 10 ** -23\ne_charge = 1.60217663 * 10 ** -19\navgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "thorTungsten",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "thorTungsten = Filament(\"Thoriated Tungsten\", 2.63, 1900, 3, .05, 105.58, .3, .4, .134, 18.8, 54.93)  # [2] [3] [7] [8] [9] For many properties, I'm assuming they're simialr to pure tungsten\n# moly = Filament(\"Molybdenum\", 4.2, 1900, 50, .041, 25.65, 3.048, None, None, None)\nfilamentList = [tungsten, thorTungsten]\nk = 1.380649 * 10 ** -23\ne_charge = 1.60217663 * 10 ** -19\navgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "filamentList",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "filamentList = [tungsten, thorTungsten]\nk = 1.380649 * 10 ** -23\ne_charge = 1.60217663 * 10 ** -19\navgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "k",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "k = 1.380649 * 10 ** -23\ne_charge = 1.60217663 * 10 ** -19\navgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "e_charge",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "e_charge = 1.60217663 * 10 ** -19\navgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "avgDischargeCurrent",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "avgDischargeCurrent = .78\nmarginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way\n    # Inverse square Law",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "marginForCurrent",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "marginForCurrent = 1.5 #50%\nbreathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way\n    # Inverse square Law\n    areaThruster = 64/10000 #64 cm^2 est",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "breathingCorrection",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "breathingCorrection = 2\ntargetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way\n    # Inverse square Law\n    areaThruster = 64/10000 #64 cm^2 est\n    standOffLength = 0.042164 # m",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "targetEmissionCurrent",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "targetEmissionCurrent = avgDischargeCurrent * marginForCurrent * breathingCorrection\ndef temp(fil: Filament, area: float):\n    sigma = 5.67 * 10 ** -8\n    e = fil.emissivity\n    Q = sigma * area * fil.workingTemp ** 4 * e\n    Q = Q/2 #Only half the radiated heat will hit the thruster, the other half will be facing the opposing way\n    # Inverse square Law\n    areaThruster = 64/10000 #64 cm^2 est\n    standOffLength = 0.042164 # m\n    Q = Q * areaThruster/(4 * math.pi * standOffLength**2)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "expTemp",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "expTemp = 1950\nJ = thorTungsten.dCoeff * (expTemp ** 2) * (\n    math.exp(((-e_charge * thorTungsten.workFunction) / (k * expTemp))))\nSA =  (2 * math.pi * (chosenFilament.diameter / 2)) * 21.6 #cm^2\nemissionCurrent = J * SA\nprint(f\"E Current: {emissionCurrent} \")\n### Testing \nfil = thorTungsten\ntesting_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature ",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "J",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "J = thorTungsten.dCoeff * (expTemp ** 2) * (\n    math.exp(((-e_charge * thorTungsten.workFunction) / (k * expTemp))))\nSA =  (2 * math.pi * (chosenFilament.diameter / 2)) * 21.6 #cm^2\nemissionCurrent = J * SA\nprint(f\"E Current: {emissionCurrent} \")\n### Testing \nfil = thorTungsten\ntesting_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "SA",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "SA =  (2 * math.pi * (chosenFilament.diameter / 2)) * 21.6 #cm^2\nemissionCurrent = J * SA\nprint(f\"E Current: {emissionCurrent} \")\n### Testing \nfil = thorTungsten\ntesting_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")\n# Method Two\nx_vals = []",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "emissionCurrent",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "emissionCurrent = J * SA\nprint(f\"E Current: {emissionCurrent} \")\n### Testing \nfil = thorTungsten\ntesting_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")\n# Method Two\nx_vals = []\ny_vals = []",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "fil",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "fil = thorTungsten\ntesting_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")\n# Method Two\nx_vals = []\ny_vals = []\nfor a in testing_list:\n     length = 150/10 # cm\n     amps = float(a)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "testing_list",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "testing_list = list(range(1,15))\nresistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")\n# Method Two\nx_vals = []\ny_vals = []\nfor a in testing_list:\n     length = 150/10 # cm\n     amps = float(a)\n     print(f\"Current: {amps}\")",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "resistivty_coeffs",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "resistivty_coeffs = [0.0307282, -5.46184] #https://www.desmos.com/calculator/gj2wpkrh0c This is resisitvity as a function of temperature \nprint(\"Testing Results: \\n --------- \\n\")\n# Method Two\nx_vals = []\ny_vals = []\nfor a in testing_list:\n     length = 150/10 # cm\n     amps = float(a)\n     print(f\"Current: {amps}\")\n     T_guess = 273 # Initial guess of Temperature",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "x_vals",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "x_vals = []\ny_vals = []\nfor a in testing_list:\n     length = 150/10 # cm\n     amps = float(a)\n     print(f\"Current: {amps}\")\n     T_guess = 273 # Initial guess of Temperature\n     sigma = 5.67 * 10 ** -8\n     for _ in range(10000): # Iterating to solve for T since resistivtity relies on temp which relies on power which relies on resistivty\n          calc_resistivity = resistivty_coeffs[0] * T_guess + resistivty_coeffs[1]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "y_vals",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "y_vals = []\nfor a in testing_list:\n     length = 150/10 # cm\n     amps = float(a)\n     print(f\"Current: {amps}\")\n     T_guess = 273 # Initial guess of Temperature\n     sigma = 5.67 * 10 ** -8\n     for _ in range(10000): # Iterating to solve for T since resistivtity relies on temp which relies on power which relies on resistivty\n          calc_resistivity = resistivty_coeffs[0] * T_guess + resistivty_coeffs[1]\n          uOmega = (calc_resistivity * length) / (math.pi * ((chosenFilament.diameter / 2)**2))",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "data",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "data = pd.read_csv('test1.csv')\nexper_x = data['A'].tolist()\nexper_y = data['D'].tolist()\nplt.plot(x_vals, y_vals)\nplt.plot(exper_x, exper_y)\nplt.title(\"Watts vs Amps\")\nplt.xlabel(\"Amps [A]\")\nplt.ylabel(\"Watts [W]\")\nplt.legend([\"Theoretical Values\", \"Experimental Values\"])\nplt.show()",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "exper_x",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "exper_x = data['A'].tolist()\nexper_y = data['D'].tolist()\nplt.plot(x_vals, y_vals)\nplt.plot(exper_x, exper_y)\nplt.title(\"Watts vs Amps\")\nplt.xlabel(\"Amps [A]\")\nplt.ylabel(\"Watts [W]\")\nplt.legend([\"Theoretical Values\", \"Experimental Values\"])\nplt.show()\n# References:",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "exper_y",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "exper_y = data['D'].tolist()\nplt.plot(x_vals, y_vals)\nplt.plot(exper_x, exper_y)\nplt.title(\"Watts vs Amps\")\nplt.xlabel(\"Amps [A]\")\nplt.ylabel(\"Watts [W]\")\nplt.legend([\"Theoretical Values\", \"Experimental Values\"])\nplt.show()\n# References:\n# [1] https://www.sciencedirect.com/science/article/abs/pii/S0042207X23000349#:~:text=The%20results%20show%20that%20the,after%20T%20exceeds%202700%20K.",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "oscilloscope_graphs",
+        "kind": 2,
+        "importPath": "oscilloscopes_graphs",
+        "description": "oscilloscopes_graphs",
+        "peekOfCode": "def oscilloscope_graphs(file):\n    '''Takes CSV file and plots the oscilloscope data'''\n    # Read CSV file, skip first row, use second row as header\n    df = pd.read_csv(file, sep=',', skiprows=1)\n    print('First few rows of data:')\n    print(df.head())\n    # Check for expected columns\n    if not all(col in df.columns for col in ['second', 'Ampere', 'Volt']):\n        print('Error: CSV does not contain required columns.')\n        return",
+        "detail": "oscilloscopes_graphs",
+        "documentation": {}
+    }
+]
